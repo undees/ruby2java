@@ -1,3 +1,4 @@
+require 'rubygems'
 require 'bitescript'
 require File.dirname(__FILE__) + '/signature'
 
@@ -56,7 +57,7 @@ module JRuby
 
       for method_name in ruby_class.public_instance_methods(false) do
         method = ruby_class.instance_method(method_name)
-        signature = if ruby_class.respond_to? :signatures
+        signatures = if ruby_class.respond_to? :signatures
           ruby_class.signatures[method_name]
         else
           nil
@@ -67,61 +68,61 @@ module JRuby
           nil
         end
 
-        create_method(cb, method_name, method, signature, annotations)
+        create_method(cb, method_name, method, signatures, annotations)
       end
     end
 
-    def create_method(cb, method_name, method, signature = nil, annotations = nil)
-      if signature
-        raise "signatures only supported for exact arities: #{RUBY_CLASS.to_s + '#' + method_name}" if method.arity < 0
-        params = signature.keys[0]
-        retval = signature[params]
-      else
-        params = (method.arity < 0) ? [IRubyObject[]] : [IRubyObject] * method.arity
-        retval = IRubyObject
+    def create_method(cb, method_name, method, signatures = nil, annotations = nil)
+      java_signature = true
+
+      unless signatures
+        signatures = Signature.undefined_for_arity(method.arity)
+        java_signature = false
       end
 
-      mb = cb.public_method method_name, retval, *params
+      for s in signatures do
+        mb = cb.public_method method_name, s.retval, *(s.params)
 
-      mb.start
+        mb.start
 
-      if annotations && annotations.size > 0
-        # define annotations
-        annotations.each do |anno_cls, anno_data|
-          mb.annotate(anno_cls, true) do |anno|
-            anno_data.each {|k,v| anno.send(k + "=", v)} if anno_data
+        if annotations && annotations.size > 0
+          # define annotations
+          annotations.each do |anno_cls, anno_data|
+            mb.annotate(anno_cls, true) do |anno|
+              anno_data.each {|k,v| anno.send(k + "=", v)} if anno_data
+            end
           end
         end
+
+        # prepare receiver, context, and method name for callMethod later
+        mb.aload 0
+        mb.dup
+        mb.invokeinterface IRubyObject, "getRuntime", [Ruby]
+        ruby_index = first_local(s.params)
+        mb.dup; mb.astore ruby_index
+        mb.invokevirtual Ruby, "getCurrentContext", [ThreadContext]
+        mb.ldc method_name
+
+        # TODO: arity-specific calling
+        if java_signature
+          java_args(mb, method, s.params, ruby_index)
+        else
+          ruby_args(mb, method)
+        end
+
+        # invoke the method dynamically
+        # TODO: this could have a simple inline cache
+        mb.invokevirtual RubyBasicObject, "callMethod", [IRubyObject, ThreadContext, mb.string, IRubyObject[]]
+
+        # return the result
+        if java_signature
+          java_return(mb, s.retval)
+        else
+          ruby_return(mb, s.retval)
+        end
+
+        mb.stop
       end
-
-      # prepare receiver, context, and method name for callMethod later
-      mb.aload 0
-      mb.dup
-      mb.invokeinterface IRubyObject, "getRuntime", [Ruby]
-      ruby_index = first_local(params)
-      mb.dup; mb.astore ruby_index
-      mb.invokevirtual Ruby, "getCurrentContext", [ThreadContext]
-      mb.ldc method_name
-
-      # TODO: arity-specific calling
-      if signature
-        java_args(mb, method, params, ruby_index)
-      else
-        ruby_args(mb, method)
-      end
-
-      # invoke the method dynamically
-      # TODO: this could have a simple inline cache
-      mb.invokevirtual RubyBasicObject, "callMethod", [IRubyObject, ThreadContext, mb.string, IRubyObject[]]
-
-      # return the result
-      if signature
-        java_return(mb, retval)
-      else
-        ruby_return(mb, retval)
-      end
-
-      mb.stop
     end
 
     def first_local(params, instance = true)
@@ -138,10 +139,10 @@ module JRuby
 
     def java_args(mb, method, params, ruby_index)
       # We have a signature and need to use java integration logic
-      mb.ldc method.arity
+      mb.ldc params.size
       mb.anewarray IRubyObject
       index = 1
-      1.upto(method.arity) do |i|
+      1.upto(params.size) do |i|
         mb.dup
         mb.ldc i - 1
         mb.aload ruby_index

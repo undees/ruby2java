@@ -1,6 +1,6 @@
 require 'rbconfig'
 require 'java'
-require 'tool/signature'
+require '../src/signature'
 
 class MyRubyClass
   def helloWorld

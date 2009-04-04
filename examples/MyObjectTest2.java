@@ -1,4 +1,4 @@
-public class MyObjectTest {
+public class MyObjectTest2 {
   public static void main(String[] args) {
     MyObject2 obj = new MyObject2();
     obj.booleanMethod(false);

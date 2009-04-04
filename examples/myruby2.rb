@@ -1,6 +1,6 @@
 require 'rbconfig'
 require 'java'
-require 'tool/signature'
+require '../src/signature'
 
 class MyRubyClass2
   %w[boolean byte short char int long float double].each do |type|
