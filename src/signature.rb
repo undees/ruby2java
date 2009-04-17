@@ -37,11 +37,11 @@ class Class
     end
 
     if args[2]
-      # TODO: Implement restargs
+      # TODO: Implement restargs?
     end
 
     if args[3]
-      # TODO: Implement blocks
+      # TODO: Implement blocks?
     end
 
     signatures[name.to_s] ||= []
@@ -75,8 +75,8 @@ class Signature
   # Check if a signature fits in the "arity" of a method
   # should be called sig.fit? *args
   # where args come from instance_method(:foo).args
-  def fit?(pre, optional, rest, block)     # TODO: Check for blocks
-    pre.size + optional.size >= params.size || !rest.nil?
+  def fit?(compulsory, optional, rest, block)     # TODO: Check for blocks
+    compulsory.size <= params.size && compulsory.size + optional.size >= params.size #|| !rest.nil?
   end
 
   def self.undefined_for_arity(arity)
