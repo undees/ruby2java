@@ -1,4 +1,4 @@
-require "spec_helper"
+require File.join( File.dirname(__FILE__), "spec_helper")
 
 describe Signature do
 
@@ -24,6 +24,6 @@ describe Signature do
   it "should retain only one signature per method" do
     TestClass.signature :method0000, [] => java::void
     TestClass.signature :method0000, [] => java::void
-    TestClass.signatures["method0000"].size.should == 1
+    TestClass.signatures["method0000"].should have(1).signatures
   end
 end
