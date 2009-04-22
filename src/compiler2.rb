@@ -1,6 +1,7 @@
 require 'rubygems'
 require 'bitescript'
-require File.dirname(__FILE__) + '/signature'
+require File.join(File.dirname(__FILE__), 'signature')
+require File.join(File.dirname(__FILE__), 'interface')
 
 module JRuby
   class JavaCompiler
@@ -29,9 +30,9 @@ module JRuby
 
     def process_class(ruby_class_path, ruby_class, java_name, require_file = nil, java_package = nil)
       if java_package
-        cb = @file_builder.package(java_package).public_class(java_name, RubyObject);
+        cb = @file_builder.package(java_package).public_class(java_name, RubyObject, *ruby_class.interfaces);
       else
-        cb = @file_builder.public_class(java_name, RubyObject);
+        cb = @file_builder.public_class(java_name, RubyObject, *ruby_class.interfaces);
       end
 
       # If a require file is specified, load it in static initializer

@@ -1,4 +1,8 @@
 require File.join( File.dirname(__FILE__), "..", "src", "signature.rb")
+require File.join( File.dirname(__FILE__), "..", "src", "interface.rb")
+
+JCloneable = java.lang.Cloneable
+JComparable = java.lang.Comparable
 
 class TestClass
 
@@ -14,5 +18,12 @@ class TestClass
 
   def method2100(a,b,c="bar")
     a + b + c
+  end
+end
+
+class Class
+  
+  def empty_interfaces
+    @interfaces = []
   end
 end
