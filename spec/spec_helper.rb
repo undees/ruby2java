@@ -1,5 +1,6 @@
 require File.join( File.dirname(__FILE__), "..", "src", "signature.rb")
 require File.join( File.dirname(__FILE__), "..", "src", "interface.rb")
+require File.join( File.dirname(__FILE__), "..", "src", "package.rb")
 
 JCloneable = java.lang.Cloneable
 JComparable = java.lang.Comparable

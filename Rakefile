@@ -17,16 +17,16 @@ end
 
 task :spec do
   require 'spec/rake/spectask'
-  desc "Runs Specs (I hope we'll have some)"
+  desc "Runs Specs"
   
-  #Spec::Rake::SpecTask.new do |t|
-  #  t.spec_opts ||= []
-  #  t.spec_files =  if ENV['class'].nil?
-  #                    FileList['test/spec/**']
-  #                  else
-  #                    File.join('test', 'spec', ENV['class']+'_spec.rb')
-  #                  end
-  #end
+  Spec::Rake::SpecTask.new do |t|
+    t.spec_opts ||= []
+    t.spec_files =  if ENV['class'].nil?
+                      FileList['spec/**_spec.rb']
+                    else
+                      File.join('spec', ENV['class']+'_spec.rb')
+                    end
+  end
 end
 
 file "Manifest.txt" => :manifest
@@ -38,7 +38,7 @@ Rake::Task['manifest'].invoke # Always regen manifest, so Hoe has up-to-date lis
 require File.dirname(__FILE__) + "/src/version"
 begin
   require 'hoe'
-  Hoe.new("rmagick4j", RMagick4J::Version::VERSION) do |p|
+  Hoe.new("r2j2", Ruby2JavaInfo::VERSION) do |p|
     p.rubyforge_name =# TODO: Where in rubyforge
     p.url = "http://kenai.com/projects/ruby2java"
     p.author = "Thomas E. Enebo, Charles O. Nutter and Sergio Rodríguez Arbeo" # Ordered by last name.

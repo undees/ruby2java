@@ -1,3 +1,3 @@
 class Ruby2JavaInfo
-  VERSION='epsilon'
+  VERSION='0.1.0'
 end
