@@ -1,6 +1,6 @@
 require 'rbconfig'
 require 'java'
-require '../src/signature'
+require File.join( File.dirname(__FILE__), '..', 'src', 'compilable')
 
 class MyRubyClass2
   %w[boolean byte short char int long float double].each do |type|

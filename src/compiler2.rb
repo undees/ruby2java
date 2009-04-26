@@ -1,7 +1,6 @@
 require 'rubygems'
 require 'bitescript'
-require File.join(File.dirname(__FILE__), 'signature')
-require File.join(File.dirname(__FILE__), 'interface')
+require File.join(File.dirname(__FILE__), 'compilable')
 require 'fileutils'
 
 module JRuby

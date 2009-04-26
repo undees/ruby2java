@@ -1,6 +1,6 @@
 require 'rbconfig'
 require 'java'
-require '../src/signature'
+require File.join( File.dirname(__FILE__), '..', 'src', 'compilable')
 
 class MyRubyClass
   def helloWorld
