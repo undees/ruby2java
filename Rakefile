@@ -3,21 +3,16 @@
 require 'rake'
 require 'rake/testtask'
 
-MANIFEST = FileList["History.txt", "Manifest.txt", "README.txt", 
-  "Rakefile", "LICENSE.txt", "src/**/*.rb"]
+MANIFEST = FileList['bin/*', 'History.txt', 'Manifest.txt', 'README.txt', 
+  'Rakefile', 'LICENSE.txt', 'lib/**/*.rb']
 
 task :default do
   puts 'We\'re coming!'
 end
 
-desc "Clean up any generated file."
-task :clean do
-  rm_rf 'pkg'
-end
-
 task :spec do
   require 'spec/rake/spectask'
-  desc "Runs Specs"
+  desc 'Runs Specs'
   
   Spec::Rake::SpecTask.new do |t|
     t.spec_opts ||= []
@@ -29,27 +24,27 @@ task :spec do
   end
 end
 
-file "Manifest.txt" => :manifest
+file 'Manifest.txt' => :manifest
 task :manifest do
-  File.open("Manifest.txt", "w") {|f| MANIFEST.each {|n| f << "#{n}\n"} }
+  File.open('Manifest.txt', 'w') {|f| MANIFEST.each {|n| f << "#{n}\n"} }
 end
 Rake::Task['manifest'].invoke # Always regen manifest, so Hoe has up-to-date list of files
 
-require File.dirname(__FILE__) + "/src/version"
+require File.dirname(__FILE__) + '/lib/version'
 begin
   require 'hoe'
-  Hoe.new("r2j2", Ruby2JavaInfo::VERSION) do |p|
-    p.rubyforge_name =# TODO: Where in rubyforge
-    p.url = "http://kenai.com/projects/ruby2java"
-    p.author = "Thomas E. Enebo, Charles O. Nutter and Sergio Rodríguez Arbeo" # Ordered by last name.
-    p.email = "serabe@gmail.com, tom.enebo@gmail.com" # TODO: Charles, add the address of your choice.
-    p.summary = "Compiler for Ruby aiming JVM"
-    p.changes = p.paragraphs_of('History.txt', 0..1).join("\n\n")
-    p.description = p.paragraphs_of('README.txt', 0...1).join("\n\n")
-  end.spec.dependencies.delete_if { |dep| dep.name == "hoe" }
+  Hoe.new('ruby2java', Ruby2JavaInfo::VERSION) do |p| # TODO: Final name: compiler2, ruby2java, r2j2?
+    p.rubyforge_name =# TODO: Where in rubyforge?
+    p.url = 'http://kenai.com/projects/ruby2java'
+    p.developer 'Thomas E. Enebo', 'tom.enebo@gmail.com'
+    p.developer 'Charles O. Nutter', 'charles.nutter@sun.com'
+    p.developer 'Sergio Rodríguez Arbeo', 'serabe@gmail.com'
+    p.summary = 'Compiler for Ruby aiming JVM'
+    p.changes = p.paragraphs_of('History.txt', 0..1).join('\n\n')
+    p.description = p.paragraphs_of('README.txt', 0...1).join('\n\n')
+  end.spec.dependencies.delete_if { |dep| dep.name == 'hoe' }
 rescue LoadError
-  puts "You really need Hoe installed to be able to package this gem"
+  puts 'You really need Hoe installed to be able to package this gem'
 rescue => e
   puts "ignoring error while loading hoe: #{e.to_s}"
 end
-
