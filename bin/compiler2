@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
-require File.join(File.dirname(__FILE__), 'compiler')
+require File.join(File.dirname(__FILE__), '..', 'lib', 'compiler.rb')
 
 if $0 == __FILE__
   java_classname = ARGV[0]

@@ -4,7 +4,7 @@ class Class
     raise ArgumentError, 'too few arguments' if package_name.empty?
     # Should we raise an exception?
     # Only first called is considered.
-    @package_name = package_name.join('.') unless @package_name
+    @package_name = package_name.map!{|x| x.split('.')}.flatten unless @package_name
   end
 
   attr_reader :package_name
