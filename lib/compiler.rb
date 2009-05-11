@@ -3,7 +3,7 @@ require 'bitescript'
 require File.join( File.dirname(__FILE__), 'compilable.rb')
 require 'fileutils'
 
-module JRuby
+module Ruby2Java
   class JavaCompiler
     RubyObject = org.jruby.RubyObject
     RubyBasicObject = org.jruby.RubyBasicObject
