@@ -1,7 +1,5 @@
 require 'jruby/ext'
 
-IRubyObject = org.jruby.runtime.builtin.IRubyObject
-
 class Class
 
   def signature(name, signature)

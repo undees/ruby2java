@@ -2,7 +2,7 @@ require 'rbconfig'
 require 'java'
 require File.join( File.dirname(__FILE__), '..', 'lib', 'compilable')
 
-class MyRubyClass
+class SimpleSignatures
   def helloWorld
     puts "Hello from Ruby"
   end
