@@ -1,21 +1,19 @@
 #!/usr/bin/env ruby
 require File.join(File.dirname(__FILE__), '..', 'lib', 'ruby2java')
 
-if $0 == __FILE__
-  java_classname = ARGV[0]
-  ruby_classname = ARGV[1]
-  ruby_filename = ARGV[2]
+java_classname = ARGV[0]
+ruby_classname = ARGV[1]
+ruby_filename = ARGV[2]
 
-  unless java_classname && ruby_classname && ruby_filename
-    puts "usage: ruby2java <java class name> <ruby class name> <ruby library>"
-    exit 1
-  end
-
-  require ruby_filename
-  ruby_class = eval(ruby_classname)
-
-  java_compiler = Ruby2Java::JavaCompiler.new(ruby_filename)
-  java_compiler.process_class(ruby_classname, ruby_class, java_classname, ruby_filename)
-
-  java_compiler.write_files
+unless java_classname && ruby_classname && ruby_filename
+  puts "usage: ruby2java <java class name> <ruby class name> <ruby library>"
+  exit 1
 end
+
+require ruby_filename
+ruby_class = eval(ruby_classname)
+
+java_compiler = Ruby2Java::JavaCompiler.new(ruby_filename)
+java_compiler.process_class(ruby_classname, ruby_class, java_classname, ruby_filename)
+
+java_compiler.write_files
