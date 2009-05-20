@@ -29,7 +29,7 @@ module Ruby2Java
       end
     end
 
-    def process_class(ruby_class_path, ruby_class, java_name, require_file = nil)
+    def process_class(ruby_class_path, ruby_class, java_name, *require_files)
       @file_builder.package = ruby_class.package_name if ruby_class.package_name
 
       cb = @file_builder.public_class(java_name, RubyObject, *ruby_class.interfaces);
@@ -40,7 +40,7 @@ module Ruby2Java
       # If a require file is specified, load it in static initializer
       cb.static_init do
         invokestatic Ruby, "getGlobalRuntime", [Ruby]
-        if require_file
+        require_files.each do |require_file|
           dup
           ldc File.read(require_file)
           ldc require_file

@@ -1,19 +1,21 @@
 #!/usr/bin/env ruby
 require File.join(File.dirname(__FILE__), '..', 'lib', 'ruby2java')
 
-java_classname = ARGV[0]
-ruby_classname = ARGV[1]
-ruby_filename = ARGV[2]
-
-unless java_classname && ruby_classname && ruby_filename
-  puts "usage: ruby2java <java class name> <ruby class name> <ruby library>"
+if ARGV.length < 2
+  puts "usage: ruby2java <ruby class> <embed1.rb> [<embed2.rb> ...]"
   exit 1
 end
 
-require ruby_filename
-ruby_class = eval(ruby_classname)
+ruby_class_name = ARGV.shift
+embed_files = ARGV.dup
 
-java_compiler = Ruby2Java::JavaCompiler.new(ruby_filename)
-java_compiler.process_class(ruby_classname, ruby_class, java_classname, ruby_filename)
+embed_files.each do |file|
+  require file
+end
+
+ruby_class = eval(ruby_class_name)
+
+java_compiler = Ruby2Java::JavaCompiler.new(embed_files[0])
+java_compiler.process_class(ruby_class_name, ruby_class, ruby_class_name, *embed_files)
 
 java_compiler.write_files
