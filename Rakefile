@@ -4,7 +4,7 @@ require 'rake'
 require 'rake/testtask'
 
 MANIFEST = FileList['bin/*', 'History.txt', 'Manifest.txt', 'README.txt', 
-  'Rakefile', 'LICENSE.txt', 'lib/**/*.rb']
+  'Rakefile', 'LICENSE.txt', 'lib/**/*.rb', "examples/**/*.{java,rb}"]
 
 task :default do
   puts 'We\'re coming!'
