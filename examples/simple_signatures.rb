@@ -1,6 +1,4 @@
 require 'rbconfig'
-require 'java'
-require File.join( File.dirname(__FILE__), '..', 'lib', 'compilable')
 
 class SimpleSignatures
   def helloWorld
@@ -10,6 +8,8 @@ class SimpleSignatures
     puts a
   end
 
-  signature :helloWorld, [] => Java::void
-  signature :goodbyeWorld, [java.lang.String] => Java::void
+  if defined? Ruby2Java
+    signature :helloWorld, [] => Java::void
+    signature :goodbyeWorld, [java.lang.String] => Java::void
+  end
 end

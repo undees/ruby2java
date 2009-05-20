@@ -6,7 +6,8 @@ class Class
     name = name.to_s
     params = signature.keys.first
     sig = Signature.new(params, signature[params])
-    if sig.fit? *(instance_method(name).args)
+    sig_method = instance_method(name) || method(name)
+    if sig.fit? *(sig_method.args)
       signatures[name] = [sig]
     else
       raise ArgumentError, "java signature does not fit ruby signature"
@@ -15,6 +16,26 @@ class Class
 
   def signatures
     @signatures ||= {}
+  end
+
+  def static_signature(name, signature)
+    name = name.to_s
+    params = signature.keys.first
+    sig = Signature.new(params, signature[params])
+    sig_method = begin
+      instance_method(name)
+    rescue NameError
+      method(name)
+    end
+    if sig.fit? *(sig_method.args)
+      static_signatures[name] = [sig]
+    else
+      raise ArgumentError, "java signature does not fit ruby signature"
+    end
+  end
+
+  def static_signatures
+    @static_signatures ||= {}
   end
 end
 
