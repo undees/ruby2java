@@ -35,13 +35,13 @@ begin
   require 'hoe'
   Hoe.new('ruby2java', Ruby2Java::VERSION) do |p| # TODO: Final name: compiler2, ruby2java, r2j2?
     p.rubyforge_name =# TODO: Where in rubyforge?
-    p.url = 'http://kenai.com/projects/ruby2java'
+    p.url = 'http://kenai.com/projects/ruby2java/pages/Home'
     p.developer 'Thomas E. Enebo', 'tom.enebo@gmail.com'
     p.developer 'Charles O. Nutter', 'charles.nutter@sun.com'
     p.developer 'Sergio Rodríguez Arbeo', 'serabe@gmail.com'
     p.summary = 'Tool for JRuby to turn Ruby code into Java classes'
-    p.changes = p.paragraphs_of('History.txt', 0..1).join('\n\n')
-    p.description = p.paragraphs_of('README.txt', 0...1).join('\n\n')
+    p.changes = p.paragraphs_of('History.txt', 0..1).join("\n\n")
+    p.description = p.paragraphs_of('README.txt', 0...1).join
   end.spec.dependencies.delete_if { |dep| dep.name == 'hoe' }
 rescue LoadError
   puts 'You really need Hoe installed to be able to package this gem'

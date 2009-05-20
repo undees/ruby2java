@@ -1,9 +1,9 @@
-== 0.0.1
+=== 0.0.1 / 2009-05-20
 
-- First experimental version
-- Basic compilation of a Ruby class to a Java class
-- public instance and static methods and public constructors
-- interface implementation
-- package specification
-- basic method annotations
+* First experimental version
+* Basic compilation of a Ruby class to a Java class
+* public instance and static methods and public constructors
+* interface implementation
+* package specification
+* basic method annotations
 
