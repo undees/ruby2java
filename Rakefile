@@ -42,6 +42,7 @@ begin
     p.summary = 'Tool for JRuby to turn Ruby code into Java classes'
     p.changes = p.paragraphs_of('History.txt', 0..1).join("\n\n")
     p.description = p.paragraphs_of('README.txt', 0...1).join
+    p.extra_deps << "bitescript"
   end.spec.dependencies.delete_if { |dep| dep.name == 'hoe' }
 rescue LoadError
   puts 'You really need Hoe installed to be able to package this gem'
