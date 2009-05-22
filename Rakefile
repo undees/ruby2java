@@ -34,7 +34,7 @@ require File.dirname(__FILE__) + '/lib/ruby2java'
 begin
   require 'hoe'
   Hoe.new('ruby2java', Ruby2Java::VERSION) do |p| # TODO: Final name: compiler2, ruby2java, r2j2?
-    p.rubyforge_name =# TODO: Where in rubyforge?
+    p.rubyforge_name = "jruby-extras"
     p.url = 'http://kenai.com/projects/ruby2java/pages/Home'
     p.developer 'Thomas E. Enebo', 'tom.enebo@gmail.com'
     p.developer 'Charles O. Nutter', 'charles.nutter@sun.com'
