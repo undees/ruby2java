@@ -19,6 +19,8 @@ The compiler will then:
 2. Retrieve the named Ruby class
 3. Inspect the Ruby class object for "signatures" and "annotations"
    methods, from which it gathers Java signature/annotation info
+3a. Inspect the Ruby class object for "static_signatures" and
+    "static_annotations" methods, for static (class) methods
 4. Generate a Java .class file for the new same-named Java class
 
 The resulting Java class will have normal constructors and methods
