@@ -225,34 +225,17 @@ module Ruby2Java
       mb.areturn
     end
 
+    BASIC_TYPES = [:boolean, :byte, :short, :char, :int, :long, :float, :double]
+
     def java_return(mb, retval)
-      if mb.boolean == retval
-        mb.invokestatic JavaUtil, "convertRubyToJavaBoolean", [mb.boolean, IRubyObject]
-        mb.ireturn
-      elsif mb.byte == retval
-        mb.invokestatic JavaUtil, "convertRubyToJavaByte", [mb.byte, IRubyObject]
-        mb.ireturn
-      elsif mb.short == retval
-        mb.invokestatic JavaUtil, "convertRubyToJavaShort", [mb.short, IRubyObject]
-        mb.ireturn
-      elsif mb.char == retval
-        mb.invokestatic JavaUtil, "convertRubyToJavaChar", [mb.char, IRubyObject]
-        mb.ireturn
-      elsif mb.int == retval
-        mb.invokestatic JavaUtil, "convertRubyToJavaInt", [mb.int, IRubyObject]
-        mb.ireturn
-      elsif mb.long == retval
-        mb.invokestatic JavaUtil, "convertRubyToJavaLong", [mb.long, IRubyObject]
-        mb.lreturn
-      elsif mb.float == retval
-        mb.invokestatic JavaUtil, "convertRubyToJavaFloat", [mb.float, IRubyObject]
-        mb.freturn
-      elsif mb.double == retval
-        mb.invokestatic JavaUtil, "convertRubyToJavaDouble", [mb.double, IRubyObject]
-        mb.dreturn
-      elsif retval == mb.void || retval == nil
+      type_name = retval.java_class.simple_name.to_sym
+
+      if BASIC_TYPES.include? retval
+        mb.invokestatic JavaUtil, "convertRubyToJava#{type_name.to_s.capitalize}", [retval, IRubyObject]
+      elsif retval == mb.void
         mb.pop
         mb.returnvoid
+        return
       else
         mb.ldc retval
         mb.invokestatic JavaUtil, "convertRubyToJava", [JObject, IRubyObject, JClass]

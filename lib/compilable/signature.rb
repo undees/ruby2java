@@ -43,6 +43,7 @@ class Signature
   attr_accessor :params, :retval
 
   def initialize(params, retval)
+    throw ArgumentError.new("Return Value must not be nil") unless retval
     @params, @retval = params.dup, retval
   end
 
