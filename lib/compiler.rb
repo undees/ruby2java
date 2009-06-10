@@ -30,9 +30,11 @@ module Ruby2Java
     end
 
     def process_class(ruby_class_path, ruby_class, java_name, *require_files)
+      raise ArgumentError, "#{ruby_class} must be compilable" unless ruby_class.ruby2java_compilable?
+
       @file_builder.package = ruby_class.package_name if ruby_class.package_name
 
-      cb = @file_builder.public_class(java_name, RubyObject, *ruby_class.interfaces);
+      cb = @file_builder.public_class(java_name, ruby_class.parent_class, *ruby_class.interfaces);
 
       # field to hold the RubyClass reference
       cb.private_static_field "__ruby_class__", RubyClass
