@@ -1,10 +1,10 @@
 class Class
 
-  def package(*package_name)
-    raise ArgumentError, 'too few arguments' if package_name.empty?
+  def package(package_name)
     # Should we raise an exception?
     # Only first called is considered.
-    @package_name = package_name.map!{|x| x.split('.')}.flatten unless @package_name
+
+    @package_name ||= package_name
   end
 
   attr_reader :package_name
