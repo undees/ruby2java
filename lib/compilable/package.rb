@@ -1,8 +1,10 @@
 class Class
 
   def package(package_name)
-    # Should we raise an exception?
-    # Only first called is considered.
+    STDERR.puts <<HERE if @package_name
+Warning: package already defined as #{package_name};\
+ ignoring redefinition
+HERE
 
     @package_name ||= package_name
   end

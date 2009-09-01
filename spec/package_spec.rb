@@ -4,6 +4,8 @@ describe "Class package support" do
  
   describe "#package" do
     it "should not take into account consecutive calls after the first one" do  
+      STDERR.should_receive(:puts).with(/ignoring redefinition/)
+
       TestClass.package "org.jruby.ruby2java"
       TestClass.package "org.jruby"
       TestClass.package_name.should == "org.jruby.ruby2java"
