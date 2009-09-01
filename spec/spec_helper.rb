@@ -1,6 +1,6 @@
-require File.join( File.dirname(__FILE__), "..", "src", "signature.rb")
-require File.join( File.dirname(__FILE__), "..", "src", "interface.rb")
-require File.join( File.dirname(__FILE__), "..", "src", "package.rb")
+require File.join( File.dirname(__FILE__), "..", "lib", "compilable", "signature")
+require File.join( File.dirname(__FILE__), "..", "lib", "compilable", "interface")
+require File.join( File.dirname(__FILE__), "..", "lib", "compilable", "package")
 
 JCloneable = java.lang.Cloneable
 JComparable = java.lang.Comparable
