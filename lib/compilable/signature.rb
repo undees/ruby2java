@@ -40,6 +40,8 @@ class Class
 end
 
 class Signature
+  IRubyObject = org.jruby.runtime.builtin.IRubyObject
+
   attr_accessor :params, :retval
 
   def initialize(params, retval)
