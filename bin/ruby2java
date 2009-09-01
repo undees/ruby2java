@@ -7,6 +7,8 @@ if ARGV.length < 2
 end
 
 ruby_class_name = ARGV.shift
+java_class_name = ruby_class_name.split('::').last
+
 embed_files = ARGV.dup
 
 embed_files.each do |file|
@@ -16,6 +18,6 @@ end
 ruby_class = eval(ruby_class_name)
 
 java_compiler = Ruby2Java::JavaCompiler.new(embed_files[0])
-java_compiler.process_class(ruby_class_name, ruby_class, ruby_class_name, *embed_files)
+java_compiler.process_class(ruby_class_name, ruby_class, java_class_name, *embed_files)
 
 java_compiler.write_files
